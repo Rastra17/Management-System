@@ -136,4 +136,56 @@ public class Registration extends JFrame implements ActionListener
         new Registration();
     }
 
-    
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        //getting data
+        String a = e_fullName.getText();
+        String b = e_userName.getText();
+        String c = e_email.getText();
+        String d = e_contact.getText();
+        String add_e = e_add.getText();
+        String f = e_pass.getText();
+        String Null = "";
+
+
+        boolean bol = !Null.equals(a) && !Null.equals(b) && !Null.equals(c) && !Null.equals(d) && !Null.equals(add_e) && !Null.equals(f) ;
+        System.out.println(bol);
+
+
+
+        if (e.getSource()==confirm_reg){
+            if (bol){
+                if (isValid(c)){
+                    if (!(d.length()<10)){
+                        if (!(d.length()>10)){
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null,"Contact Number cannot be more than 10");
+                        }
+
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"Contact Number cannot be less than 10");
+                    }
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Invalid email");
+                }
+            }
+
+            else{
+                System.out.println("hoe");
+                JOptionPane.showMessageDialog(null,"Please fill all the fields!");
+            }
+        }
+        else if(e.getSource()==Back){
+            signup_frame.setVisible(false);
+            new Registration().setVisible(true);
+        }
+        else if (e.getSource()==Exit){
+            signup_frame.setVisible(false);
+        }
+    }
+}
