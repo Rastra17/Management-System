@@ -1,4 +1,3 @@
-//Making a Login GUI in Java
 package src.ms;
 
 import javax.swing.JFrame;

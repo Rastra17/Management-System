@@ -32,6 +32,7 @@ public class Registration extends JFrame implements ActionListener
     {
         signup_frame = new JFrame();
         signup_frame.setTitle("Registration");
+        signup_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         signup_frame.setSize(900,600);
         signup_frame.setResizable(false);
 
@@ -150,20 +151,39 @@ public class Registration extends JFrame implements ActionListener
 
         if (e.getSource()==confirm_reg)
         {
-            ResultSet result=st.executeQuery("SELECT email ms.customer_details WHERE email="+c+';');
-
-            if(a!="" && b!="" && c!="" && d!="" && add_e!="" && f!="")
+            try
             {
-                if(result==null)
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                String Url="jdbc:mysql://localhost:3306/ms";
+                String User="root";
+                String Password="root";
+                Connection db=DriverManager.getConnection(Url,User,Password);
+                Statement st=db.createStatement();
+                ResultSet result=st.executeQuery("SELECT email FROM ms.customer_details WHERE email="+c+';');
+
+                if(a!="" && b!="" && c!="" && d!="" && add_e!="" && f!="")
                 {
-                    st.executeUpdate("INSERT INTO customer_details(fullname,username,email,password,address,contact) VALUES("+a+','+b+','+c+','+f+','+add_e+','+d+';');
-                    JOptionPane.showMessageDialog(null,"Registered successfully!","Success",JOptionPane.INFORMATION_MESSAGE);
-                }
-                else if(c==result.getString(1));
-                {
+                    if(result==null)
+                    {
+                        String query="INSERT INTO ms.customer_details(fullname,username,email,password,address,contact) VALUES(%s,%s,%s,%s,%s,%s);";
+                        st.executeUpdate(String.format(query,a,b,c,f,add_e,d));
+                        JOptionPane.showMessageDialog(null,"Registered successfully!","Success",JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else if(c==result.getString(1))
+                    {
                     JOptionPane.showMessageDialog(null,"Entry Already Exists!","Failed!",JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
+            catch(Exception z)
+            {
+                System.out.println(z);
+            }
+            finally
+            {
+                System.out.println("Closed database");
+            }
+
         }
         else if(e.getSource()==Back)
         {
