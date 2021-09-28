@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
+import java.sql.*;
 
 public class Registration extends JFrame implements ActionListener 
 {
@@ -139,52 +140,38 @@ public class Registration extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        //getting data
+        
         String a = e_fullName.getText();
         String b = e_userName.getText();
         String c = e_email.getText();
         String d = e_contact.getText();
         String add_e = e_add.getText();
         String f = e_pass.getText();
-        String Null = "";
 
+        if (e.getSource()==confirm_reg)
+        {
+            ResultSet result=st.executeQuery("SELECT email ms.customer_details WHERE email="+c+';');
 
-        boolean bol = !Null.equals(a) && !Null.equals(b) && !Null.equals(c) && !Null.equals(d) && !Null.equals(add_e) && !Null.equals(f) ;
-        System.out.println(bol);
-
-
-
-        if (e.getSource()==confirm_reg){
-            if (bol){
-                if (isValid(c)){
-                    if (!(d.length()<10)){
-                        if (!(d.length()>10)){
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null,"Contact Number cannot be more than 10");
-                        }
-
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null,"Contact Number cannot be less than 10");
-                    }
-
+            if(a!="" && b!="" && c!="" && d!="" && add_e!="" && f!="")
+            {
+                if(result==null)
+                {
+                    st.executeUpdate("INSERT INTO customer_details(fullname,username,email,password,address,contact) VALUES("+a+','+b+','+c+','+f+','+add_e+','+d+';');
+                    JOptionPane.showMessageDialog(null,"Registered successfully!","Success",JOptionPane.INFORMATION_MESSAGE);
                 }
-                else{
-                    JOptionPane.showMessageDialog(null,"Invalid email");
+                else if(c==result.getString(1));
+                {
+                    JOptionPane.showMessageDialog(null,"Entry Already Exists!","Failed!",JOptionPane.INFORMATION_MESSAGE);
                 }
-            }
-
-            else{
-                System.out.println("hoe");
-                JOptionPane.showMessageDialog(null,"Please fill all the fields!");
             }
         }
-        else if(e.getSource()==Back){
+        else if(e.getSource()==Back)
+        {
             signup_frame.setVisible(false);
             new Registration().setVisible(true);
         }
-        else if (e.getSource()==Exit){
+        else if (e.getSource()==Exit)
+        {
             signup_frame.setVisible(false);
         }
     }
