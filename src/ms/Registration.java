@@ -135,10 +135,6 @@ public class Registration extends JFrame implements ActionListener
         signup_frame.setLayout(null);
         signup_frame.setVisible(true);
     }
-    public static void main(String[] args) 
-    {
-        new Registration();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) 
@@ -163,7 +159,7 @@ public class Registration extends JFrame implements ActionListener
                 Statement st=db.createStatement();
                 result=st.executeQuery("SELECT email FROM ms.customer_details WHERE email='"+c+"';");
 
-                if(a!="" && b!="" && c!="" && d!="" && add_e!="" && f!="")
+                if(a!="" || b!="" || c!="" || d!="" || add_e!="" || f!="")
                 {
                     if(!result.next())
                     {
@@ -179,6 +175,11 @@ public class Registration extends JFrame implements ActionListener
                     JOptionPane.showMessageDialog(null,"Entry Already Exists!","Failed!",JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Empty Field(s)!","Failed!",JOptionPane.INFORMATION_MESSAGE);
+                }
+                db.close();
             }
             catch(Exception z)
             {
