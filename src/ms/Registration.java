@@ -15,6 +15,8 @@ public class Registration extends JFrame implements ActionListener
     private int valx=100, valy=40;
     private JButton confirm_reg,Exit,Back;
     private int bx=(valx+170), by=valy+360;
+    int val;
+    ResultSet result;
 
     public static boolean isValid(String email)
     {
@@ -159,15 +161,18 @@ public class Registration extends JFrame implements ActionListener
                 String Password="root";
                 Connection db=DriverManager.getConnection(Url,User,Password);
                 Statement st=db.createStatement();
-                ResultSet result=st.executeQuery("SELECT email FROM ms.customer_details WHERE email="+c+';');
+                result=st.executeQuery("SELECT email FROM ms.customer_details WHERE email='"+c+"';");
 
                 if(a!="" && b!="" && c!="" && d!="" && add_e!="" && f!="")
                 {
-                    if(result==null)
+                    if(!result.next())
                     {
-                        String query="INSERT INTO ms.customer_details(fullname,username,email,password,address,contact) VALUES(%s,%s,%s,%s,%s,%s);";
-                        st.executeUpdate(String.format(query,a,b,c,f,add_e,d));
-                        JOptionPane.showMessageDialog(null,"Registered successfully!","Success",JOptionPane.INFORMATION_MESSAGE);
+                        String query="INSERT INTO ms.customer_details(fullname,username,email,password,address,contact) VALUES('"+a+"','"+b+"','"+c+"','"+f+"','"+add_e+"','"+d+"');";
+                        val=st.executeUpdate(query);
+                        if(val>0)
+                        {
+                            JOptionPane.showMessageDialog(null,"Registered successfully!","Success",JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                     else if(c==result.getString(1))
                     {
