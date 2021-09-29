@@ -131,9 +131,13 @@ public class Registration extends JFrame implements ActionListener
         Back.addActionListener(this);
         Exit.addActionListener(this);
 
-
         signup_frame.setLayout(null);
         signup_frame.setVisible(true);
+    }
+
+    public static void main(String args[])
+    {
+        new Registration();
     }
 
     @Override
